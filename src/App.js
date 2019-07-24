@@ -1,26 +1,28 @@
 import React from 'react';
+import useAxios from './hooks/useAxios'
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const {response, error, isLoading } = useAxios('https://jsonplaceholder.typicode.com/posts')
+  console.log(response, error, isLoading)
+
+  return(
+      <div className="App">
+        {
+          isLoading && (<h1>LOADING</h1>) 
+        }  
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          {
+            response && response.data && (
+              response.data.map(({title}) => (<div>{title}</div>))
+            )
+          }
+        </header>
+      </div>
+    );
+  
 }
 
 export default App;
